@@ -5,10 +5,7 @@ import exceptions.AlunoJaCadastradoException;
 
 import java.util.*;
 
-/**
- * Repositório de alunos que implementa o padrão Singleton.
- * Responsável por gerenciar a persistência dos dados dos alunos.
- */
+
 public class AlunoRepository {
     private static AlunoRepository instancia;
     private Map<String, Aluno> alunos = new HashMap<>();
@@ -22,11 +19,7 @@ public class AlunoRepository {
         return instancia;
     }
 
-    /**
-     * Adiciona um aluno ao repositório
-     * @param aluno Aluno a ser cadastrado
-     * @throws AlunoJaCadastradoException se o aluno já estiver cadastrado
-     */
+
     public void adicionar(Aluno aluno) throws AlunoJaCadastradoException {
         if (!alunos.containsKey(aluno.getCpf())) {
             alunos.put(aluno.getCpf(), aluno);
