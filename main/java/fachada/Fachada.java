@@ -71,13 +71,10 @@ public class Fachada {
         return treinoService.criarTreino(nome, instrutor, exercicios);
     }
 
-    /**
-     * Atribui um treino a um aluno
-     * @param cpfAluno CPF do aluno que receberá o treino
-     * @param treino Treino a ser atribuído
-     * @throws AlunoNaoEncontradoException se o aluno não for encontrado
-     * @throws InstrutorNaoEncontradoException se o instrutor do treino não for encontrado
-     */
+
+    //Atribui um treino a um aluno
+
+
     public void atribuirTreino(String cpfAluno, Treino treino)
             throws AlunoNaoEncontradoException, InstrutorNaoEncontradoException {
         // Valida se o aluno existe
