@@ -24,7 +24,7 @@ Este é um projeto Java desenvolvido como parte da disciplina **Laboratório de 
    git clone https://github.com/seu-usuario/sistema-academia-lab2.git
    ```
 
-2. Abra a pasta main e avance pela pasta java e rode o Main.java
+2. Abra a pasta main e avance para a pasta java e rode o Main.java
 
 # Funcionalidades Implementadas
 
