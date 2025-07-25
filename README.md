@@ -24,11 +24,12 @@ Este é um projeto Java desenvolvido como parte da disciplina **Laboratório de 
    git clone https://github.com/seu-usuario/sistema-academia-lab2.git
    ```
 
-2. Compile e execute o arquivo `Main.java` usando sua IDE Java (Eclipse, IntelliJ) ou terminal com `javac`/`java`.
+2. Abra a pasta main e avance pela pasta java e rode o Main.java
 
 # Funcionalidades Implementadas
 
-- Cadastro e listagem de alunos
+- Cadastro e listagem do aluno
+- Cadastro e listagem do instrutor
 - Criação de treinos personalizados
 - Associação de treinos a alunos
 - Definição de instrutores e exercícios
@@ -36,10 +37,7 @@ Este é um projeto Java desenvolvido como parte da disciplina **Laboratório de 
 # Equipe
 
 - **Lucas Augusto** – 
-- **Bruno Cavalcanti** – 
-- **João Vinícius França e Mendonça** 
 
 
-# Licença
 
-Este projeto é de uso acadêmico e está sob licença do nosso grupo
+
