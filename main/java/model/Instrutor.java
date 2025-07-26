@@ -14,20 +14,41 @@ public class Instrutor extends Pessoa implements UsuarioSistema {
         this.senha = senha;
     }
 
-    // Implementação do método da interface UsuarioSistema
     @Override
     public boolean autenticar(String senha) {
         return this.senha.equals(senha);
     }
 
-    // Getters e Setters
-    public String getEspecialidade() { return especialidade; }
-    public List<Aluno> getAlunos() { return alunos; }
-    public String getSenha() { return senha; }
+    public String getEspecialidade() {
+        return especialidade;
+    }
 
+    public List<Aluno> getAlunos() {
+        return new ArrayList<>(alunos); // Retorna cópia para encapsulamento
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    // Método único (removida a duplicação)
     public void adicionarAluno(Aluno aluno) {
-        if (!alunos.contains(aluno)) {
+        if (aluno != null && !alunos.contains(aluno)) {
             alunos.add(aluno);
+            // Garante a associação bidirecional
+            if (!aluno.getInstrutores().contains(this)) {
+                aluno.adicionarInstrutor(this);
+            }
+        }
+    }
+
+    public void removerAluno(Aluno aluno) {
+        if (aluno != null && alunos.contains(aluno)) {
+            alunos.remove(aluno);
+            // Remove a associação bidirecional
+            if (aluno.getInstrutores().contains(this)) {
+                aluno.getInstrutores().remove(this);
+            }
         }
     }
 }

@@ -35,7 +35,9 @@ public class EditarTreinoGUI {
         }
 
         if (options.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Nenhum treino encontrado para editar", "Aviso", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "Nenhum treino encontrado para editar",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
             return null;
         }
 
@@ -50,7 +52,8 @@ public class EditarTreinoGUI {
 
         if (selected != null) {
             for (Treino t : aluno.getTreinos()) {
-                if (t.getNome().equals(selected) && t.getInstrutor().getCpf().equals(instrutor.getCpf())) {
+                if (t.getNome().equals(selected) &&
+                        t.getInstrutor().getCpf().equals(instrutor.getCpf())) {
                     return t;
                 }
             }
@@ -69,7 +72,8 @@ public class EditarTreinoGUI {
 
         // Painel de exercícios
         exerciciosModel = new DefaultListModel<>();
-        treino.getExercicios().forEach(e -> exerciciosModel.addElement(e.getNome() + " (" + e.getGrupoMuscular() + ")"));
+        treino.getExercicios().forEach(e ->
+                exerciciosModel.addElement(e.getNome() + " (" + e.getGrupoMuscular() + ")"));
 
         exerciciosList = new JList<>(exerciciosModel);
         JScrollPane scrollPane = new JScrollPane(exerciciosList);

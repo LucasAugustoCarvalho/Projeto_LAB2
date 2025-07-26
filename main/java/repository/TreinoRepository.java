@@ -17,20 +17,20 @@ public class TreinoRepository {
     }
 
     public void adicionar(Treino treino) {
-        treinos.add(treino);
+        if (treino != null && !treinos.contains(treino)) {
+            treinos.add(treino);
+        }
     }
 
     public void atualizar(Treino treino) {
-        treinos.removeIf(t ->
-                t.getNome().equals(treino.getNome()) &&
-                        t.getInstrutor().getCpf().equals(treino.getInstrutor().getCpf()));
+        treinos.removeIf(t -> t.getNome().equals(treino.getNome()) &&
+                t.getInstrutor().getCpf().equals(treino.getInstrutor().getCpf()));
         treinos.add(treino);
     }
 
     public void remover(Treino treino) {
-        treinos.removeIf(t ->
-                t.getNome().equals(treino.getNome()) &&
-                        t.getInstrutor().getCpf().equals(treino.getInstrutor().getCpf()));
+        treinos.removeIf(t -> t.getNome().equals(treino.getNome()) &&
+                t.getInstrutor().getCpf().equals(treino.getInstrutor().getCpf()));
     }
 
     public List<Treino> listarTodos() {

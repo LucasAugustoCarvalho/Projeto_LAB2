@@ -3,7 +3,6 @@ package gui;
 import model.*;
 import fachada.Fachada;
 import exceptions.*;
-
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -30,20 +29,18 @@ public class InstrutorGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        // Layout principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Cabeçalho
-        JLabel headerLabel = new JLabel("Bem-vindo, Instrutor " + instrutor.getNome(),
-                SwingConstants.CENTER);
+        // Header
+        JLabel headerLabel = new JLabel("Bem-vindo, Instrutor " + instrutor.getNome(), SwingConstants.CENTER);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         mainPanel.add(headerLabel, BorderLayout.NORTH);
 
-        // Painel central com abas
+        // Tabbed pane
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Aba de Alunos
+        // Students tab
         JPanel alunosPanel = new JPanel(new BorderLayout());
         alunosModel = new DefaultTableModel(
                 new Object[]{"Nome", "CPF", "Idade", "Plano", "Qtd Treinos"}, 0) {
@@ -55,12 +52,17 @@ public class InstrutorGUI {
 
         alunosTable = new JTable(alunosModel);
         alunosTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         JScrollPane alunosScroll = new JScrollPane(alunosTable);
         alunosPanel.add(alunosScroll, BorderLayout.CENTER);
 
-        // Botões para alunos
+        // Students buttons panel
         JPanel alunosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        // Add Student Association Button
+        JButton associarAlunoButton = new JButton("Associar Aluno");
+        associarAlunoButton.addActionListener(e -> associarNovoAluno());
+        alunosButtonPanel.add(associarAlunoButton);
+
         JButton verTreinosButton = new JButton("Ver Treinos");
         verTreinosButton.addActionListener(e -> verTreinosDoAluno());
         alunosButtonPanel.add(verTreinosButton);
@@ -69,14 +71,14 @@ public class InstrutorGUI {
         editarTreinoButton.addActionListener(e -> editarTreino());
         alunosButtonPanel.add(editarTreinoButton);
 
-        JButton criarTreinoButton = new JButton("Criar Novo Treino");
+        JButton criarTreinoButton = new JButton("Criar Treino");
         criarTreinoButton.addActionListener(e -> criarNovoTreino());
         alunosButtonPanel.add(criarTreinoButton);
 
         alunosPanel.add(alunosButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Meus Alunos", alunosPanel);
 
-        // Aba de Treinos
+        // Trainings tab
         JPanel treinosPanel = new JPanel(new BorderLayout());
         treinosModel = new DefaultTableModel(
                 new Object[]{"Nome do Treino", "Aluno", "Qtd Exercícios"}, 0) {
@@ -91,7 +93,7 @@ public class InstrutorGUI {
         JScrollPane treinosScroll = new JScrollPane(treinosTable);
         treinosPanel.add(treinosScroll, BorderLayout.CENTER);
 
-        // Botões para treinos
+        // Trainings buttons panel
         JPanel treinosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton removerTreinoButton = new JButton("Remover Treino");
         removerTreinoButton.addActionListener(e -> removerTreino());
@@ -102,7 +104,7 @@ public class InstrutorGUI {
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // Rodapé
+        // Footer
         JButton sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
             new LoginGUI();
@@ -118,7 +120,7 @@ public class InstrutorGUI {
 
     private void carregarDados() {
         try {
-            // Carrega alunos
+            // Load students
             alunosModel.setRowCount(0);
             List<Aluno> alunos = Fachada.getInstancia().listarAlunosPorInstrutor(instrutor.getCpf());
 
@@ -136,7 +138,7 @@ public class InstrutorGUI {
                 });
             }
 
-            // Carrega treinos
+            // Load trainings
             treinosModel.setRowCount(0);
             for (Aluno aluno : alunos) {
                 aluno.getTreinos().stream()
@@ -155,6 +157,35 @@ public class InstrutorGUI {
                     "Erro ao carregar dados: " + e.getMessage(),
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void associarNovoAluno() {
+        String cpfAluno = JOptionPane.showInputDialog(frame,
+                "Digite o CPF do aluno para associar:");
+
+        if (cpfAluno != null && !cpfAluno.trim().isEmpty()) {
+            try {
+                Fachada.getInstancia().associarAlunoInstrutor(
+                        cpfAluno,
+                        instrutor.getCpf()
+                );
+                JOptionPane.showMessageDialog(frame,
+                        "Aluno associado com sucesso!",
+                        "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
+                carregarDados();
+            } catch (AlunoNaoEncontradoException e) {
+                JOptionPane.showMessageDialog(frame,
+                        "Aluno não encontrado: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame,
+                        "Erro na associação: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -183,7 +214,7 @@ public class InstrutorGUI {
             try {
                 Aluno aluno = Fachada.getInstancia().buscarAluno(cpfAluno);
                 new EditarTreinoGUI(instrutor, aluno).setVisible(true);
-                carregarDados(); // Atualiza a lista após edição
+                carregarDados();
             } catch (AlunoNaoEncontradoException e) {
                 JOptionPane.showMessageDialog(frame, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -202,7 +233,7 @@ public class InstrutorGUI {
             try {
                 Aluno aluno = Fachada.getInstancia().buscarAluno(cpfAluno);
                 new CriarTreinoGUI(instrutor, aluno).setVisible(true);
-                carregarDados(); // Atualiza a lista após criação
+                carregarDados();
             } catch (AlunoNaoEncontradoException e) {
                 JOptionPane.showMessageDialog(frame, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -227,7 +258,6 @@ public class InstrutorGUI {
 
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
-                    // Encontra o CPF do aluno
                     String cpfAluno = null;
                     for (int i = 0; i < alunosModel.getRowCount(); i++) {
                         if (alunosModel.getValueAt(i, 0).equals(nomeAluno)) {
@@ -242,7 +272,7 @@ public class InstrutorGUI {
                                 cpfAluno,
                                 nomeTreino
                         );
-                        carregarDados(); // Atualiza a lista
+                        carregarDados();
                     }
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(frame,

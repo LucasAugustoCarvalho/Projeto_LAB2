@@ -4,7 +4,6 @@ import model.*;
 import repository.*;
 import exceptions.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Fachada {
     private static Fachada instancia;
@@ -38,9 +37,14 @@ public class Fachada {
         return aluno;
     }
 
+    public void atualizarAluno(Aluno aluno) throws AlunoNaoEncontradoException {
+        alunoRepository.atualizar(aluno);
+    }
+
     public void removerAluno(String cpf) throws AlunoNaoEncontradoException {
-        Aluno aluno = buscarAluno(cpf);
-        alunoRepository.remover(cpf);
+        if (!alunoRepository.remover(cpf)) {
+            throw new AlunoNaoEncontradoException(cpf);
+        }
     }
 
     // Métodos para Instrutor
@@ -56,9 +60,14 @@ public class Fachada {
         return instrutor;
     }
 
+    public void atualizarInstrutor(Instrutor instrutor) throws InstrutorNaoEncontradoException {
+        instrutorRepository.atualizar(instrutor);
+    }
+
     public void removerInstrutor(String cpf) throws InstrutorNaoEncontradoException {
-        Instrutor instrutor = buscarInstrutor(cpf);
-        instrutorRepository.remover(cpf);
+        if (!instrutorRepository.remover(cpf)) {
+            throw new InstrutorNaoEncontradoException(cpf);
+        }
     }
 
     // Métodos para Treino
@@ -72,32 +81,36 @@ public class Fachada {
         treinoRepository.adicionar(treino);
     }
 
-    public void atualizarTreino(String cpfInstrutor, String cpfAluno, String nomeTreino, List<Exercicio> exercicios)
+    public void atualizarTreino(String cpfInstrutor, String cpfAluno, String nomeTreino,
+                                List<Exercicio> exercicios)
             throws InstrutorNaoEncontradoException, AlunoNaoEncontradoException {
+
         Instrutor instrutor = buscarInstrutor(cpfInstrutor);
         Aluno aluno = buscarAluno(cpfAluno);
 
         Treino treinoAtualizado = new Treino(nomeTreino, instrutor, exercicios);
         treinoRepository.atualizar(treinoAtualizado);
 
-        // Atualiza na lista de treinos do aluno
         aluno.getTreinos().removeIf(t -> t.getNome().equals(nomeTreino) &&
                 t.getInstrutor().getCpf().equals(cpfInstrutor));
         aluno.adicionarTreino(treinoAtualizado);
+        alunoRepository.atualizar(aluno);
     }
 
     public void removerTreino(String cpfInstrutor, String cpfAluno, String nomeTreino)
             throws InstrutorNaoEncontradoException, AlunoNaoEncontradoException {
+
         Instrutor instrutor = buscarInstrutor(cpfInstrutor);
         Aluno aluno = buscarAluno(cpfAluno);
 
         aluno.getTreinos().removeIf(t -> t.getNome().equals(nomeTreino) &&
                 t.getInstrutor().getCpf().equals(cpfInstrutor));
+        alunoRepository.atualizar(aluno);
 
         treinoRepository.remover(new Treino(nomeTreino, instrutor, null));
     }
 
-    // Métodos para associação entre Aluno e Instrutor
+    // Métodos para Associação Aluno-Instrutor
     public void associarAlunoInstrutor(String cpfAluno, String cpfInstrutor)
             throws AlunoNaoEncontradoException, InstrutorNaoEncontradoException {
 
@@ -105,7 +118,8 @@ public class Fachada {
         Instrutor instrutor = buscarInstrutor(cpfInstrutor);
 
         aluno.adicionarInstrutor(instrutor);
-        instrutor.adicionarAluno(aluno);
+        alunoRepository.atualizar(aluno);
+        instrutorRepository.atualizar(instrutor);
     }
 
     public List<Aluno> listarAlunosPorInstrutor(String cpfInstrutor) throws InstrutorNaoEncontradoException {
@@ -113,26 +127,26 @@ public class Fachada {
         return instrutor.getAlunos();
     }
 
-    // Método de login
+    // Método de Autenticação
     public UsuarioSistema login(String cpf, String senha) throws LoginException {
-        // Tenta encontrar como aluno primeiro
+        // Tenta autenticar como aluno
         try {
             Aluno aluno = buscarAluno(cpf);
             if (aluno.autenticar(senha)) {
                 return aluno;
             }
         } catch (AlunoNaoEncontradoException e) {
-            // Não faz nada, tenta como instrutor
+            // Continua para tentar como instrutor
         }
 
-        // Tenta encontrar como instrutor
+        // Tenta autenticar como instrutor
         try {
             Instrutor instrutor = buscarInstrutor(cpf);
             if (instrutor.autenticar(senha)) {
                 return instrutor;
             }
         } catch (InstrutorNaoEncontradoException e) {
-            // Não faz nada, lança exceção abaixo
+            // Lança exceção de login
         }
 
         throw new LoginException("CPF ou senha inválidos");

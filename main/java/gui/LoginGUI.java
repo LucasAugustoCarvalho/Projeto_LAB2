@@ -71,7 +71,6 @@ public class LoginGUI {
         panel.add(cadastroButton, gbc);
 
         frame.add(panel);
-        frame.setVisible(true);
     }
 
     private void realizarLogin(ActionEvent e) {

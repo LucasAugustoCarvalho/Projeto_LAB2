@@ -2,6 +2,7 @@ package repository;
 
 import model.Aluno;
 import exceptions.AlunoJaCadastradoException;
+import exceptions.AlunoNaoEncontradoException;
 import java.util.*;
 
 public class AlunoRepository {
@@ -18,28 +19,35 @@ public class AlunoRepository {
     }
 
     public void adicionar(Aluno aluno) throws AlunoJaCadastradoException {
-        if (!alunos.containsKey(aluno.getCpf())) {
-            alunos.put(aluno.getCpf(), aluno);
-        } else {
+        if (aluno == null) {
+            throw new IllegalArgumentException("Aluno não pode ser nulo");
+        }
+        if (alunos.containsKey(aluno.getCpf())) {
             throw new AlunoJaCadastradoException(aluno.getCpf());
         }
+        alunos.put(aluno.getCpf(), aluno);
     }
 
     public Aluno buscar(String cpf) {
         return alunos.get(cpf);
     }
 
-    public void remover(String cpf) {
-        alunos.remove(cpf);
+    public boolean remover(String cpf) {
+        return alunos.remove(cpf) != null;
+    }
+
+    // Método atualizar único e completo
+    public void atualizar(Aluno aluno) throws AlunoNaoEncontradoException {
+        if (aluno == null) {
+            throw new IllegalArgumentException("Aluno não pode ser nulo");
+        }
+        if (!alunos.containsKey(aluno.getCpf())) {
+            throw new AlunoNaoEncontradoException(aluno.getCpf());
+        }
+        alunos.put(aluno.getCpf(), aluno);
     }
 
     public Collection<Aluno> listarTodos() {
-        return alunos.values();
-    }
-
-    public void atualizar(Aluno aluno) {
-        if (alunos.containsKey(aluno.getCpf())) {
-            alunos.put(aluno.getCpf(), aluno);
-        }
+        return new ArrayList<>(alunos.values());
     }
 }
