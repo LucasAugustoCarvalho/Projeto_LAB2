@@ -36,7 +36,7 @@ public class InstrutorRepository {
         return instrutores.remove(cpf) != null;
     }
 
-    // Método atualizar único (sem duplicação)
+    // metodo de atualizar
     public void atualizar(Instrutor instrutor) throws InstrutorNaoEncontradoException {
         if (instrutor == null) {
             throw new IllegalArgumentException("Instrutor não pode ser nulo");

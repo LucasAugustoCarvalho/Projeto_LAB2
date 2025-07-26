@@ -36,7 +36,7 @@ public class AlunoRepository {
         return alunos.remove(cpf) != null;
     }
 
-    // Método atualizar único e completo
+    // metodo de atualizar
     public void atualizar(Aluno aluno) throws AlunoNaoEncontradoException {
         if (aluno == null) {
             throw new IllegalArgumentException("Aluno não pode ser nulo");

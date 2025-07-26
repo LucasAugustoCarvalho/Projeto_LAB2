@@ -32,15 +32,15 @@ public class InstrutorGUI {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Header
+        // cabeçalho
         JLabel headerLabel = new JLabel("Bem-vindo, Instrutor " + instrutor.getNome(), SwingConstants.CENTER);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         mainPanel.add(headerLabel, BorderLayout.NORTH);
 
-        // Tabbed pane
+
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        // Students tab
+        // linha do aluno
         JPanel alunosPanel = new JPanel(new BorderLayout());
         alunosModel = new DefaultTableModel(
                 new Object[]{"Nome", "CPF", "Idade", "Plano", "Qtd Treinos"}, 0) {
@@ -56,7 +56,7 @@ public class InstrutorGUI {
         JScrollPane alunosScroll = new JScrollPane(alunosTable);
         alunosPanel.add(alunosScroll, BorderLayout.CENTER);
 
-        // Students buttons panel
+        // botao do estudante
         JPanel alunosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JButton associarAlunoButton = new JButton("Associar Aluno");
@@ -78,7 +78,7 @@ public class InstrutorGUI {
         alunosPanel.add(alunosButtonPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Meus Alunos", alunosPanel);
 
-        // Trainings tab
+        // aba do instrutor
         JPanel treinosPanel = new JPanel(new BorderLayout());
         treinosModel = new DefaultTableModel(
                 new Object[]{"Nome do Treino", "Aluno", "Qtd Exercícios"}, 0) {
@@ -94,7 +94,7 @@ public class InstrutorGUI {
         JScrollPane treinosScroll = new JScrollPane(treinosTable);
         treinosPanel.add(treinosScroll, BorderLayout.CENTER);
 
-        // Trainings buttons panel
+        // instrutor botões
         JPanel treinosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton removerTreinoButton = new JButton("Remover Treino");
         removerTreinoButton.addActionListener(e -> removerTreino());
@@ -105,7 +105,7 @@ public class InstrutorGUI {
 
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // Footer
+        // rodape
         JButton sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
             new LoginGUI().setVisible(true);
@@ -121,7 +121,7 @@ public class InstrutorGUI {
 
     private void carregarDados() {
         try {
-            // Load students
+            // carrega aluno
             alunosModel.setRowCount(0);
             List<Aluno> alunos = Fachada.getInstancia().listarAlunosPorInstrutor(instrutor.getCpf());
 
@@ -139,7 +139,7 @@ public class InstrutorGUI {
                 });
             }
 
-            // Load trainings
+            // carrega instrutor
             treinosModel.setRowCount(0);
             for (Aluno aluno : alunos) {
                 aluno.getTreinos().stream()
@@ -197,12 +197,12 @@ public class InstrutorGUI {
             try {
                 Aluno aluno = Fachada.getInstancia().buscarAluno(cpfAluno);
 
-                // Create a dialog to display the trainings
+
                 JDialog treinosDialog = new JDialog(frame, "Treinos de " + aluno.getNome(), true);
                 treinosDialog.setSize(800, 500);
                 treinosDialog.setLocationRelativeTo(frame);
 
-                // Create table model
+
                 DefaultTableModel model = new DefaultTableModel(
                         new Object[]{"Treino", "Exercícios"}, 0) {
                     @Override
@@ -211,7 +211,7 @@ public class InstrutorGUI {
                     }
                 };
 
-                // Populate with data
+
                 for (Treino treino : aluno.getTreinos()) {
                     if (treino.getInstrutor().equals(instrutor)) {
                         StringBuilder exercicios = new StringBuilder();
@@ -226,13 +226,12 @@ public class InstrutorGUI {
                     }
                 }
 
-                // Configure table
+
                 JTable table = new JTable(model);
                 table.setRowHeight(60);
                 table.getColumnModel().getColumn(0).setPreferredWidth(150);
                 table.getColumnModel().getColumn(1).setPreferredWidth(600);
 
-                // Add to dialog
                 treinosDialog.add(new JScrollPane(table));
                 treinosDialog.setVisible(true);
 

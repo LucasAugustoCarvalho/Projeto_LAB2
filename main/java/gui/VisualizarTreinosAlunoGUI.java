@@ -5,7 +5,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import model.Aluno;
 import model.Treino;
-import model.Exercicio; // Added missing import
+import model.Exercicio;
 
 public class VisualizarTreinosAlunoGUI {
     private JFrame frame;
@@ -26,7 +26,7 @@ public class VisualizarTreinosAlunoGUI {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Tabela de treinos com renderizador personalizado
+        // tabela de treinos
         JTable treinosTable = new JTable();
         treinosTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
@@ -41,7 +41,7 @@ public class VisualizarTreinosAlunoGUI {
         JScrollPane scrollPane = new JScrollPane(treinosTable);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Botão Fechar
+        // botão Fechar
         JButton closeButton = new JButton("Fechar");
         closeButton.addActionListener(e -> frame.dispose());
         mainPanel.add(closeButton, BorderLayout.SOUTH);
@@ -75,16 +75,16 @@ public class VisualizarTreinosAlunoGUI {
             });
         }
 
-        // Get the table from the scroll pane and set the model
+
         JTable table = (JTable)((JScrollPane)frame.getContentPane().getComponent(0)).getViewport().getView();
         table.setModel(model);
 
-        // Adjust column widths
+
         table.getColumnModel().getColumn(0).setPreferredWidth(150);
         table.getColumnModel().getColumn(1).setPreferredWidth(150);
         table.getColumnModel().getColumn(2).setPreferredWidth(500);
 
-        // Set row height to accommodate multiple lines
+
         table.setRowHeight(60);
     }
 

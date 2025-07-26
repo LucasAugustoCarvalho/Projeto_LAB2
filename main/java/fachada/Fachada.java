@@ -24,7 +24,7 @@ public class Fachada {
         return instancia;
     }
 
-    // Métodos para Aluno
+    // metodos para Aluno
     public void cadastrarAluno(Aluno aluno) throws AlunoJaCadastradoException {
         alunoRepository.adicionar(aluno);
     }
@@ -47,7 +47,7 @@ public class Fachada {
         }
     }
 
-    // Métodos para Instrutor
+    // metodos para instrutor
     public void cadastrarInstrutor(Instrutor instrutor) throws InstrutorJaCadastradoException {
         instrutorRepository.adicionar(instrutor);
     }
@@ -70,7 +70,7 @@ public class Fachada {
         }
     }
 
-    // Métodos para Treino
+    // metodos para treino
     public Treino criarTreino(String nome, Instrutor instrutor, List<Exercicio> exercicios) {
         return new Treino(nome, instrutor, exercicios);
     }
@@ -110,7 +110,7 @@ public class Fachada {
         treinoRepository.remover(new Treino(nomeTreino, instrutor, null));
     }
 
-    // Métodos para Associação Aluno-Instrutor
+    // metodos para associação aluno-instrutor
     public void associarAlunoInstrutor(String cpfAluno, String cpfInstrutor)
             throws AlunoNaoEncontradoException, InstrutorNaoEncontradoException {
 
@@ -127,26 +127,26 @@ public class Fachada {
         return instrutor.getAlunos();
     }
 
-    // Método de Autenticação
+    // metodo de autenticaçãao
     public UsuarioSistema login(String cpf, String senha) throws LoginException {
-        // Tenta autenticar como aluno
+        // tenta autenticar como aluno
         try {
             Aluno aluno = buscarAluno(cpf);
             if (aluno.autenticar(senha)) {
                 return aluno;
             }
         } catch (AlunoNaoEncontradoException e) {
-            // Continua para tentar como instrutor
+            // continua tentando como instrutor
         }
 
-        // Tenta autenticar como instrutor
+        // tenta autenticar como instrutor
         try {
             Instrutor instrutor = buscarInstrutor(cpf);
             if (instrutor.autenticar(senha)) {
                 return instrutor;
             }
         } catch (InstrutorNaoEncontradoException e) {
-            // Lança exceção de login
+            // lança exceção de login
         }
 
         throw new LoginException("CPF ou senha inválidos");

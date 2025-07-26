@@ -6,45 +6,46 @@ import exceptions.*;
 
 import java.util.List;
 
+// main para testes no terminaal
 public class Main {
     public static void main(String[] args) {
         try {
             Fachada sistema = Fachada.getInstancia();
 
-            // 1. Teste de Cadastro do Aluno com senha
+            // teste de cadastro do aluno com senha
             testarCadastroAluno(sistema);
 
-            // 2. Teste de Login do Aluno
+            // teste de login do aluno
             testarLoginAluno(sistema);
 
-            // 3. Teste de Cadastro do Instrutor com senha
+            // teste de cadastro do instrutor com senha
             testarCadastroInstrutor(sistema);
 
-            // 4. Teste de Login do Instrutor
+            //teste de login do instrutor
             testarLoginInstrutor(sistema);
 
-            // 5. Teste de Detalhes do Aluno (após login)
+            // teste de detalhes do aluno (apos login)
             testarDetalhesAluno(sistema);
 
-            // 6. Teste de Visualizar Instrutor (após login)
+            //teste de visualizar instrutor (apos login)
             testarVisualizarInstrutor(sistema);
 
-            // 7. Teste de Cadastrar Treino (após login)
+            // teste de cadastrar treino (apos login)
             testarCadastrarTreino(sistema);
 
-            // 8. Teste de Exclusão de Aluno
+            // teste de exclusão de aluno
             testarExcluirAluno(sistema);
 
-            // 9. Teste de Exclusão de Instrutor
+            // teste de exclusão de instrutor
             testarExcluirInstrutor(sistema);
 
-            // 10. Teste tentando excluir aluno não existente
+            // teste tentando excluir aluno não existente
             testarExcluirAlunoInexistente(sistema);
 
-            // 11. Teste tentando excluir instrutor não existente
+            // teste tentando excluir instrutor não existente
             testarExcluirInstrutorInexistente(sistema);
 
-            // 12. Teste de login inválido
+            // teste de login inválido
             testarLoginInvalido(sistema);
 
         } catch (Exception e) {
@@ -52,7 +53,7 @@ public class Main {
         }
     }
 
-    // 1. Teste de Cadastro do Aluno com senha
+    // teste de cadastro do aluno com senha
     private static void testarCadastroAluno(Fachada sistema) throws Exception {
         System.out.println("\n=== 1. TESTE CADASTRO ALUNO COM SENHA ===");
 
@@ -64,7 +65,7 @@ public class Main {
         System.out.println("   Plano: " + aluno1.getPlano());
     }
 
-    // 2. Teste de Login do Aluno
+    // teste de login do Aluno
     private static void testarLoginAluno(Fachada sistema) throws Exception {
         System.out.println("\n=== 2. TESTE LOGIN ALUNO ===");
 
@@ -78,7 +79,7 @@ public class Main {
         }
     }
 
-    // 3. Teste de Cadastro do Instrutor com senha
+    // teste de cadastro do instrutor com senha
     private static void testarCadastroInstrutor(Fachada sistema) throws Exception {
         System.out.println("\n=== 3. TESTE CADASTRO INSTRUTOR COM SENHA ===");
 
@@ -90,7 +91,7 @@ public class Main {
         System.out.println("   CPF: " + instrutor.getCpf());
     }
 
-    // 4. Teste de Login do Instrutor
+    // teste de login do instrutor
     private static void testarLoginInstrutor(Fachada sistema) throws Exception {
         System.out.println("\n=== 4. TESTE LOGIN INSTRUTOR ===");
 
@@ -105,11 +106,11 @@ public class Main {
         }
     }
 
-    // 5. Teste de Detalhes do Aluno (após login)
+    // teste de detalhes do aluno apos login
     private static void testarDetalhesAluno(Fachada sistema) throws Exception {
         System.out.println("\n=== 5. TESTE DETALHES DO ALUNO (APÓS LOGIN) ===");
 
-        // Faz login primeiro
+        // login primeiro
         sistema.login("11122233344", "senhaMaria");
 
         Aluno aluno = sistema.buscarAluno("11122233344");
@@ -121,11 +122,11 @@ public class Main {
         System.out.println("   Quantidade de treinos: " + aluno.getTreinos().size());
     }
 
-    // 6. Teste de Visualizar Instrutor (após login)
+    // teste de visualizar instrutor apos login
     private static void testarVisualizarInstrutor(Fachada sistema) throws Exception {
         System.out.println("\n=== 6. TESTE VISUALIZAR INSTRUTOR (APÓS LOGIN) ===");
 
-        // Faz login primeiro
+        // primeiro login
         sistema.login("55544433322", "senhaCarlos");
 
         Instrutor instrutor = sistema.buscarInstrutor("55544433322");
@@ -136,25 +137,25 @@ public class Main {
         System.out.println("   CPF: " + instrutor.getCpf());
     }
 
-    // 7. Teste de Cadastrar Treino (após login)
+    // teste de cadastrar treino apos login
     private static void testarCadastrarTreino(Fachada sistema) throws Exception {
         System.out.println("\n=== 7. TESTE CADASTRAR TREINO (APÓS LOGIN) ===");
 
-        // Faz login como instrutor
+        //login como instrutor
         sistema.login("55544433322", "senhaCarlos");
 
-        // Busca os registros necessários
+        // busca
         Aluno aluno = sistema.buscarAluno("11122233344");
         Instrutor instrutor = sistema.buscarInstrutor("55544433322");
 
-        // Cria exercícios
+        // cria exercícios
         List<Exercicio> exercicios = List.of(
                 new Exercicio("Supino Reto", "Peitoral"),
                 new Exercicio("Leg Press", "Pernas"),
                 new Exercicio("Puxada Alta", "Costas")
         );
 
-        // Cria e atribui o treino
+        // cria e atribui o treino
         Treino treino = sistema.criarTreino("Treino Inicial", instrutor, exercicios);
         sistema.atribuirTreino(aluno.getCpf(), treino);
 
@@ -163,54 +164,54 @@ public class Main {
         System.out.println("   Instrutor responsável: " + treino.getInstrutor().getNome());
         System.out.println("   Quantidade de exercícios: " + treino.getExercicios().size());
 
-        // Mostra detalhes do treino atribuído ao aluno
+        // mostra treino atribuído ao aluno
         System.out.println("\n   Detalhes do treino atribuído:");
         for (Exercicio ex : treino.getExercicios()) {
             System.out.println("   - " + ex.getNome() + " (" + ex.getGrupoMuscular() + ")");
         }
     }
 
-    // 8. Teste de Exclusão de Aluno
+    // teste de exclusão de aluno
     private static void testarExcluirAluno(Fachada sistema) throws Exception {
         System.out.println("\n=== 8. TESTE EXCLUIR ALUNO ===");
 
-        // Primeiro verifica se o aluno existe
+        // primeiro verifica se o aluno existe
         Aluno aluno = sistema.buscarAluno("11122233344");
         System.out.println("   Aluno encontrado: " + aluno.getNome());
 
-        // Exclui o aluno
+        // exclui o aluno
         sistema.removerAluno("11122233344");
         System.out.println("   Aluno excluído com sucesso!");
 
         try {
-            // Tenta buscar o aluno excluído (deve lançar exceção)
+            // tenta buscar o aluno excluído
             sistema.buscarAluno("11122233344");
         } catch (AlunoNaoEncontradoException e) {
             System.out.println("   OK: " + e.getMessage());
         }
     }
 
-    // 9. Teste de Exclusão de Instrutor
+    // teste de exclusão de instrutor
     private static void testarExcluirInstrutor(Fachada sistema) throws Exception {
         System.out.println("\n=== 9. TESTE EXCLUIR INSTRUTOR ===");
 
-        // Primeiro verifica se o instrutor existe
+        // primeiro verifica se o instrutor existe
         Instrutor instrutor = sistema.buscarInstrutor("55544433322");
         System.out.println("   Instrutor encontrado: " + instrutor.getNome());
 
-        // Exclui o instrutor
+        // exclui o instrutor
         sistema.removerInstrutor("55544433322");
         System.out.println("   Instrutor excluído com sucesso!");
 
         try {
-            // Tenta buscar o instrutor excluído (deve lançar exceção)
+            // tenta buscar o instrutor excluído
             sistema.buscarInstrutor("55544433322");
         } catch (InstrutorNaoEncontradoException e) {
             System.out.println("   OK: " + e.getMessage());
         }
     }
 
-    // 10. Teste tentando excluir aluno não existente
+    // teste tentando excluir aluno não existente
     private static void testarExcluirAlunoInexistente(Fachada sistema) {
         System.out.println("\n=== 10. TESTE EXCLUIR ALUNO INEXISTENTE ===");
 
@@ -223,7 +224,7 @@ public class Main {
         }
     }
 
-    // 11. Teste tentando excluir instrutor não existente
+    // teste tentando excluir instrutor não existente
     private static void testarExcluirInstrutorInexistente(Fachada sistema) {
         System.out.println("\n=== 11. TESTE EXCLUIR INSTRUTOR INEXISTENTE ===");
 
@@ -236,12 +237,12 @@ public class Main {
         }
     }
 
-    // 12. Teste de login inválido
+    // teste de login invalido
     private static void testarLoginInvalido(Fachada sistema) {
         System.out.println("\n=== 12. TESTE LOGIN INVÁLIDO ===");
 
         try {
-            // Tentativa com senha errada
+            // tentativa com senha errada
             sistema.login("11122233344", "senhaErrada");
             System.err.println("   ERRO: Login com senha inválida não lançou exceção");
         } catch (LoginException e) {
@@ -249,7 +250,7 @@ public class Main {
         }
 
         try {
-            // Tentativa com CPF não cadastrado
+            // tentativa com CPF não cadastrado
             sistema.login("00000000000", "qualquerSenha");
             System.err.println("   ERRO: Login com CPF não cadastrado não lançou exceção");
         } catch (LoginException e) {

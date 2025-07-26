@@ -7,7 +7,9 @@ import model.*;
 import fachada.Fachada;
 import exceptions.LoginException;
 
+
 public class LoginGUI {
+    // componentes da interface
     private JFrame frame;
     private JTextField cpfField;
     private JPasswordField senhaField;
@@ -16,6 +18,7 @@ public class LoginGUI {
         initialize();
     }
 
+    // inicializa os componentes da interface
     private void initialize() {
         frame = new JFrame("Login - Sistema de Academia");
         frame.setSize(400, 300);
@@ -54,6 +57,7 @@ public class LoginGUI {
         senhaField = new JPasswordField(15);
         panel.add(senhaField, gbc);
 
+        // botão login
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
@@ -62,6 +66,7 @@ public class LoginGUI {
         loginButton.addActionListener(this::realizarLogin);
         panel.add(loginButton, gbc);
 
+        // botão cadastre-se
         gbc.gridy = 4;
         JButton cadastroButton = new JButton("Cadastre-se");
         cadastroButton.addActionListener(e -> {
@@ -73,6 +78,7 @@ public class LoginGUI {
         frame.add(panel);
     }
 
+    // executa o login quando o botão é pressionado
     private void realizarLogin(ActionEvent e) {
         String cpf = cpfField.getText().replaceAll("[^0-9]", "");
         String senha = new String(senhaField.getPassword());
@@ -80,6 +86,7 @@ public class LoginGUI {
         try {
             UsuarioSistema usuario = Fachada.getInstancia().login(cpf, senha);
 
+            // redireciona conforme o tipo de usuário
             if (usuario instanceof Aluno) {
                 new AlunoGUI((Aluno) usuario).setVisible(true);
             } else if (usuario instanceof Instrutor) {

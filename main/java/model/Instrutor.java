@@ -24,14 +24,14 @@ public class Instrutor extends Pessoa implements UsuarioSistema {
     }
 
     public List<Aluno> getAlunos() {
-        return new ArrayList<>(alunos); // Retorna cópia para encapsulamento
+        return new ArrayList<>(alunos);
     }
 
     public String getSenha() {
         return senha;
     }
 
-    // Método único (removida a duplicação)
+
     public void adicionarAluno(Aluno aluno) {
         if (aluno != null && !alunos.contains(aluno)) {
             alunos.add(aluno);
@@ -45,7 +45,8 @@ public class Instrutor extends Pessoa implements UsuarioSistema {
     public void removerAluno(Aluno aluno) {
         if (aluno != null && alunos.contains(aluno)) {
             alunos.remove(aluno);
-            // Remove a associação bidirecional
+
+            // remove a associação bidirecional
             if (aluno.getInstrutores().contains(this)) {
                 aluno.getInstrutores().remove(this);
             }

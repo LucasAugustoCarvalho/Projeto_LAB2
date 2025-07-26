@@ -24,20 +24,20 @@ public class AlunoGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        // Layout principal
+        // layout principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Cabeçalho
+        // cabeçalho
         JLabel headerLabel = new JLabel("Bem-vindo, " + aluno.getNome(), SwingConstants.CENTER);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         mainPanel.add(headerLabel, BorderLayout.NORTH);
 
-        // Painel central dividido (treinos x exercícios)
+        // painel central dividido treinos e exercícios
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerLocation(400);
 
-        // Painel da tabela de treinos
+        // painel da tabela de treinos
         JPanel treinosPanel = new JPanel(new BorderLayout());
         treinosPanel.setBorder(BorderFactory.createTitledBorder("Meus Treinos"));
 
@@ -53,7 +53,7 @@ public class AlunoGUI {
         treinosPanel.add(tableScroll, BorderLayout.CENTER);
         splitPane.setLeftComponent(treinosPanel);
 
-        // Painel de detalhes dos exercícios
+        // painel de detalhes dos exercícios
         JPanel exerciciosPanel = new JPanel(new BorderLayout());
         exerciciosPanel.setBorder(BorderFactory.createTitledBorder("Exercícios do Treino"));
 
@@ -68,7 +68,7 @@ public class AlunoGUI {
 
         mainPanel.add(splitPane, BorderLayout.CENTER);
 
-        // Rodapé com botão Sair
+        // rodape com botão sair
         JButton sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
             new LoginGUI();
@@ -114,7 +114,7 @@ public class AlunoGUI {
             }
 
             exerciciosArea.setText(sb.toString());
-            exerciciosArea.setCaretPosition(0); // Rola para o topo
+            exerciciosArea.setCaretPosition(0); // rola para o topo
         }
     }
 

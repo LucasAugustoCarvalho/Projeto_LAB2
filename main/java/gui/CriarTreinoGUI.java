@@ -31,20 +31,20 @@ public class CriarTreinoGUI {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Campos do treino
+        // campos do treino
         JPanel formPanel = new JPanel(new GridLayout(2, 2, 5, 5));
         formPanel.add(new JLabel("Nome do Treino:"));
         JTextField nomeField = new JTextField();
         formPanel.add(nomeField);
         mainPanel.add(formPanel, BorderLayout.NORTH);
 
-        // Lista de exercícios
+        // lista de exercícios
         exerciciosModel = new DefaultListModel<>();
         exerciciosList = new JList<>(exerciciosModel);
         JScrollPane scrollPane = new JScrollPane(exerciciosList);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Painel de botões
+        // botões
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 5, 5));
 
         JButton addButton = new JButton("Adicionar Exercício");

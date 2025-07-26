@@ -39,7 +39,7 @@ public class Aluno extends Pessoa implements UsuarioSistema {
     public void adicionarTreino(Treino treino) {
         if (treino != null && !treinos.contains(treino)) {
             treinos.add(treino);
-            // Adiciona o instrutor automaticamente se não estiver associado
+            // adiciona o instrutor se não estiver associado
             if (!instrutores.contains(treino.getInstrutor())) {
                 adicionarInstrutor(treino.getInstrutor());
             }
@@ -49,7 +49,7 @@ public class Aluno extends Pessoa implements UsuarioSistema {
     public void adicionarInstrutor(Instrutor instrutor) {
         if (instrutor != null && !instrutores.contains(instrutor)) {
             instrutores.add(instrutor);
-            // Garante a associação bidirecional
+            // garante a associação bidirecional
             if (!instrutor.getAlunos().contains(this)) {
                 instrutor.adicionarAluno(this);
             }

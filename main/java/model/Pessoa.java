@@ -1,5 +1,6 @@
 package model;
 
+// cria classe abstrata
 
 public abstract class Pessoa {
     protected String nome;

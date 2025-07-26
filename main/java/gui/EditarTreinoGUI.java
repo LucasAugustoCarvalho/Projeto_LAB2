@@ -70,7 +70,7 @@ public class EditarTreinoGUI {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Painel de exercícios
+        // painel de exercícios
         exerciciosModel = new DefaultListModel<>();
         treino.getExercicios().forEach(e ->
                 exerciciosModel.addElement(e.getNome() + " (" + e.getGrupoMuscular() + ")"));
@@ -79,7 +79,7 @@ public class EditarTreinoGUI {
         JScrollPane scrollPane = new JScrollPane(exerciciosList);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Painel de botões
+        // painel de botões
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 5, 5));
 
         JButton addButton = new JButton("Adicionar Exercício");
