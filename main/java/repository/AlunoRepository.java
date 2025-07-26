@@ -2,9 +2,7 @@ package repository;
 
 import model.Aluno;
 import exceptions.AlunoJaCadastradoException;
-
 import java.util.*;
-
 
 public class AlunoRepository {
     private static AlunoRepository instancia;
@@ -18,7 +16,6 @@ public class AlunoRepository {
         }
         return instancia;
     }
-
 
     public void adicionar(Aluno aluno) throws AlunoJaCadastradoException {
         if (!alunos.containsKey(aluno.getCpf())) {
@@ -38,5 +35,11 @@ public class AlunoRepository {
 
     public Collection<Aluno> listarTodos() {
         return alunos.values();
+    }
+
+    public void atualizar(Aluno aluno) {
+        if (alunos.containsKey(aluno.getCpf())) {
+            alunos.put(aluno.getCpf(), aluno);
+        }
     }
 }

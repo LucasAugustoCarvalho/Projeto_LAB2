@@ -1,4 +1,3 @@
-// UsuarioSistema.java
 package model;
 
 public interface UsuarioSistema {

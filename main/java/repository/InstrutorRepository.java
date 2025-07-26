@@ -1,9 +1,8 @@
 package repository;
 
-import exceptions.InstrutorJaCadastradoException;
 import model.Instrutor;
-import java.util.HashMap;
-import java.util.Map;
+import exceptions.InstrutorJaCadastradoException;
+import java.util.*;
 
 public class InstrutorRepository {
     private static InstrutorRepository instancia;
@@ -32,5 +31,11 @@ public class InstrutorRepository {
 
     public void remover(String cpf) {
         instrutores.remove(cpf);
+    }
+
+    public void atualizar(Instrutor instrutor) {
+        if (instrutores.containsKey(instrutor.getCpf())) {
+            instrutores.put(instrutor.getCpf(), instrutor);
+        }
     }
 }
