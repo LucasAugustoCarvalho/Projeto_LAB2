@@ -1,4 +1,4 @@
-# Sistema de Gestão de Academia
+# Sistema de Academia
 
 Este é um projeto Java desenvolvido como parte da disciplina Laboratório de Programação 2 (LAB2). O sistema simula uma plataforma de gestão para academias, incluindo funcionalidades como cadastro de alunos, criação de treinos personalizados e atribuição de instrutores.
 
