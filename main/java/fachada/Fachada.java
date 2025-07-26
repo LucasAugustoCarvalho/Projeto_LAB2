@@ -1,11 +1,11 @@
 package fachada;
 
 import exceptions.*;
-import java.util.List;
 import model.*;
 import repository.AlunoRepository;
 import repository.InstrutorRepository;
 import service.TreinoService;
+import java.util.List;
 
 public class Fachada {
     private static Fachada instance;
@@ -56,10 +56,17 @@ public class Fachada {
     }
 
     public Instrutor buscarInstrutor(String cpf) throws InstrutorNaoEncontradoException {
-        return instrutorRepository.buscar(cpf);
+        Instrutor instrutor = instrutorRepository.buscar(cpf);
+        if (instrutor == null) {
+            throw new InstrutorNaoEncontradoException(cpf);
+        }
+        return instrutor;
     }
 
     public void removerInstrutor(String cpf) throws InstrutorNaoEncontradoException {
+        if (instrutorRepository.buscar(cpf) == null) {
+            throw new InstrutorNaoEncontradoException(cpf);
+        }
         instrutorRepository.remover(cpf);
     }
 
@@ -67,25 +74,45 @@ public class Fachada {
     public Treino criarTreino(String nome, Instrutor instrutor, List<Exercicio> exercicios)
             throws InstrutorNaoEncontradoException {
         // Valida se o instrutor existe
-        instrutorRepository.buscar(instrutor.getCpf());
+        buscarInstrutor(instrutor.getCpf());
         return treinoService.criarTreino(nome, instrutor, exercicios);
     }
-
-
-    //Atribui um treino a um aluno
-
 
     public void atribuirTreino(String cpfAluno, Treino treino)
             throws AlunoNaoEncontradoException, InstrutorNaoEncontradoException {
         // Valida se o aluno existe
-        Aluno aluno = alunoRepository.buscar(cpfAluno);
-        if (aluno == null) {
-            throw new AlunoNaoEncontradoException(cpfAluno);
+        Aluno aluno = buscarAluno(cpfAluno);
+        // Valida se o instrutor do treino existe
+        buscarInstrutor(treino.getInstrutor().getCpf());
+        treinoService.atribuirTreino(aluno, treino);
+    }
+
+    // Métodos de autenticação
+    public UsuarioSistema login(String cpf, String senha) throws LoginException {
+        // Primeiro tenta como aluno
+        try {
+            Aluno aluno = buscarAluno(cpf);
+            if (aluno != null && aluno.autenticar(senha)) {
+                return aluno;
+            }
+        } catch (AlunoNaoEncontradoException e) {
+            // Continua para tentar como instrutor
         }
 
-        // Valida se o instrutor do treino existe
-        instrutorRepository.buscar(treino.getInstrutor().getCpf());
+        // Se não encontrou como aluno, tenta como instrutor
+        try {
+            Instrutor instrutor = buscarInstrutor(cpf);
+            if (instrutor != null && instrutor.autenticar(senha)) {
+                return instrutor;
+            }
+        } catch (InstrutorNaoEncontradoException e) {
+            // Lança exceção de login
+        }
 
-        treinoService.atribuirTreino(aluno, treino);
+        throw new LoginException("CPF ou senha inválidos");
+    }
+
+    public void logout() {
+        // Implementação para limpar sessão se necessário
     }
 }
