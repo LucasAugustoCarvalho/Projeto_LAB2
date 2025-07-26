@@ -33,23 +33,17 @@ public class CadastroGUI {
         gbc.gridwidth = 1;
         gbc.gridy = 1;
         JButton alunoButton = new JButton("Sou Aluno");
-        alunoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CadastroAlunoGUI().setVisible(true);
-                frame.dispose();
-            }
+        alunoButton.addActionListener(e -> {
+            new CadastroAlunoGUI().setVisible(true);
+            frame.dispose();
         });
         panel.add(alunoButton, gbc);
 
         gbc.gridx = 1;
         JButton instrutorButton = new JButton("Sou Instrutor");
-        instrutorButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CadastroInstrutorGUI().setVisible(true);
-                frame.dispose();
-            }
+        instrutorButton.addActionListener(e -> {
+            new CadastroInstrutorGUI().setVisible(true);
+            frame.dispose();
         });
         panel.add(instrutorButton, gbc);
 
@@ -57,12 +51,9 @@ public class CadastroGUI {
         gbc.gridy = 2;
         gbc.gridwidth = 2;
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new LoginGUI();
-                frame.dispose();
-            }
+        voltarButton.addActionListener(e -> {
+            new LoginGUI().setVisible(true);
+            frame.dispose();
         });
         panel.add(voltarButton, gbc);
 

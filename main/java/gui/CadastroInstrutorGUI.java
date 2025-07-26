@@ -69,25 +69,19 @@ public class CadastroInstrutorGUI {
         gbc.gridy = 6;
         gbc.gridwidth = 2;
         JButton cadastrarButton = new JButton("Cadastrar");
-        cadastrarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aqui você implementaria a lógica de cadastro
-                JOptionPane.showMessageDialog(frame, "Instrutor cadastrado com sucesso!");
-                new LoginGUI();
-                frame.dispose();
-            }
+        cadastrarButton.addActionListener(e -> {
+            // Implement registration logic here
+            JOptionPane.showMessageDialog(frame, "Instrutor cadastrado com sucesso!");
+            new LoginGUI().setVisible(true);
+            frame.dispose();
         });
         panel.add(cadastrarButton, gbc);
 
         gbc.gridy = 7;
         JButton voltarButton = new JButton("Voltar");
-        voltarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CadastroGUI();
-                frame.dispose();
-            }
+        voltarButton.addActionListener(e -> {
+            new LoginGUI().setVisible(true);
+            frame.dispose();
         });
         panel.add(voltarButton, gbc);
 

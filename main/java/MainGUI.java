@@ -24,6 +24,9 @@ public class MainGUI {
             // Create test student
             Aluno maria = new Aluno("Maria Silva", "11122233344", 25, "Plano Anual", "senha123");
             fachada.cadastrarAluno(maria);
+            // Create test student
+            Aluno joao = new Aluno("joao Silva", "11122233377", 25, "Plano Anual", "123");
+            fachada.cadastrarAluno(joao);
 
             // Create test instructor
             Instrutor carlos = new Instrutor("Carlos Magno", "55544433322", 35, "Musculação", "senha456");
@@ -39,6 +42,9 @@ public class MainGUI {
 
             // Explicitly associate student with instructor
             fachada.associarAlunoInstrutor(maria.getCpf(), carlos.getCpf());
+
+
+
 
         } catch (Exception e) {
             e.printStackTrace();

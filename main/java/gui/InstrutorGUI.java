@@ -52,13 +52,13 @@ public class InstrutorGUI {
 
         alunosTable = new JTable(alunosModel);
         alunosTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        alunosTable.setRowHeight(25);
         JScrollPane alunosScroll = new JScrollPane(alunosTable);
         alunosPanel.add(alunosScroll, BorderLayout.CENTER);
 
         // Students buttons panel
         JPanel alunosButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        // Add Student Association Button
         JButton associarAlunoButton = new JButton("Associar Aluno");
         associarAlunoButton.addActionListener(e -> associarNovoAluno());
         alunosButtonPanel.add(associarAlunoButton);
@@ -90,6 +90,7 @@ public class InstrutorGUI {
 
         treinosTable = new JTable(treinosModel);
         treinosTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        treinosTable.setRowHeight(25);
         JScrollPane treinosScroll = new JScrollPane(treinosTable);
         treinosPanel.add(treinosScroll, BorderLayout.CENTER);
 
@@ -107,7 +108,7 @@ public class InstrutorGUI {
         // Footer
         JButton sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
-            new LoginGUI();
+            new LoginGUI().setVisible(true);
             frame.dispose();
         });
 
@@ -195,7 +196,46 @@ public class InstrutorGUI {
             String cpfAluno = (String) alunosModel.getValueAt(selectedRow, 1);
             try {
                 Aluno aluno = Fachada.getInstancia().buscarAluno(cpfAluno);
-                new VisualizarTreinosAlunoGUI(aluno).setVisible(true);
+
+                // Create a dialog to display the trainings
+                JDialog treinosDialog = new JDialog(frame, "Treinos de " + aluno.getNome(), true);
+                treinosDialog.setSize(800, 500);
+                treinosDialog.setLocationRelativeTo(frame);
+
+                // Create table model
+                DefaultTableModel model = new DefaultTableModel(
+                        new Object[]{"Treino", "Exercícios"}, 0) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+
+                // Populate with data
+                for (Treino treino : aluno.getTreinos()) {
+                    if (treino.getInstrutor().equals(instrutor)) {
+                        StringBuilder exercicios = new StringBuilder();
+                        for (Exercicio ex : treino.getExercicios()) {
+                            exercicios.append("• ")
+                                    .append(ex.getNome())
+                                    .append(" (")
+                                    .append(ex.getGrupoMuscular())
+                                    .append(")\n");
+                        }
+                        model.addRow(new Object[]{treino.getNome(), exercicios.toString()});
+                    }
+                }
+
+                // Configure table
+                JTable table = new JTable(model);
+                table.setRowHeight(60);
+                table.getColumnModel().getColumn(0).setPreferredWidth(150);
+                table.getColumnModel().getColumn(1).setPreferredWidth(600);
+
+                // Add to dialog
+                treinosDialog.add(new JScrollPane(table));
+                treinosDialog.setVisible(true);
+
             } catch (AlunoNaoEncontradoException e) {
                 JOptionPane.showMessageDialog(frame, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
