@@ -22,14 +22,14 @@ public class MainGUI {
             Fachada fachada = Fachada.getInstancia();
 
             // cria aluno de teste
-            Aluno maria = new Aluno("Maria Silva", "11122233344", 25, "Plano Anual", "senha123");
+            Aluno maria = new Aluno("Maria Silva", "11111111111", 25, "Plano Anual", "123");
             fachada.cadastrarAluno(maria);
             // cria aluno de teste
-            Aluno joao = new Aluno("joao Silva", "11122233377", 25, "Plano Anual", "123");
+            Aluno joao = new Aluno("joao Silva", "22222222222", 25, "Plano Anual", "123");
             fachada.cadastrarAluno(joao);
 
             // cria instrutor de teste
-            Instrutor carlos = new Instrutor("Carlos Magno", "55544433322", 35, "Musculação", "senha456");
+            Instrutor carlos = new Instrutor("Carlos Magno", "55555555555", 35, "Musculação", "456");
             fachada.cadastrarInstrutor(carlos);
 
             // cria e vincula treino

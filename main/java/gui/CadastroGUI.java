@@ -12,7 +12,7 @@ public class CadastroGUI {
     public CadastroGUI() {
         initialize();
     }
-//inicializa a interface
+    //inicializa a interface
     private void initialize() {
         frame = new JFrame("Cadastro - Sistema de Academia");
         frame.setSize(400, 300);

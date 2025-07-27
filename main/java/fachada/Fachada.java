@@ -4,6 +4,7 @@ import model.*;
 import repository.*;
 import exceptions.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Fachada {
     private static Fachada instancia;
@@ -24,7 +25,7 @@ public class Fachada {
         return instancia;
     }
 
-    // metodos para Aluno
+    // metodos para aluno
     public void cadastrarAluno(Aluno aluno) throws AlunoJaCadastradoException {
         alunoRepository.adicionar(aluno);
     }
@@ -97,20 +98,37 @@ public class Fachada {
         alunoRepository.atualizar(aluno);
     }
 
+    public List<Treino> listarTreinosAtivosPorAluno(String cpfAluno, String cpfInstrutor)
+            throws AlunoNaoEncontradoException, InstrutorNaoEncontradoException {
+
+        Aluno aluno = buscarAluno(cpfAluno);
+        Instrutor instrutor = buscarInstrutor(cpfInstrutor);
+
+        return aluno.getTreinos().stream()
+                .filter(t -> t.getInstrutor().equals(instrutor))
+                .filter(t -> treinoRepository.listarTodos().contains(t))
+                .collect(Collectors.toList());
+    }
+
     public void removerTreino(String cpfInstrutor, String cpfAluno, String nomeTreino)
             throws InstrutorNaoEncontradoException, AlunoNaoEncontradoException {
 
         Instrutor instrutor = buscarInstrutor(cpfInstrutor);
         Aluno aluno = buscarAluno(cpfAluno);
 
-        aluno.getTreinos().removeIf(t -> t.getNome().equals(nomeTreino) &&
-                t.getInstrutor().getCpf().equals(cpfInstrutor));
-        alunoRepository.atualizar(aluno);
+        Treino treinoParaRemover = aluno.getTreinos().stream()
+                .filter(t -> t.getNome().equals(nomeTreino) &&
+                        t.getInstrutor().equals(instrutor))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Treino não encontrado"));
 
-        treinoRepository.remover(new Treino(nomeTreino, instrutor, null));
+        aluno.getTreinos().remove(treinoParaRemover);
+        treinoRepository.remover(treinoParaRemover);
+        alunoRepository.atualizar(aluno);
+        instrutorRepository.atualizar(instrutor);
     }
 
-    // metodos para associação aluno-instrutor
+    // metodo associação aluno-instrutor
     public void associarAlunoInstrutor(String cpfAluno, String cpfInstrutor)
             throws AlunoNaoEncontradoException, InstrutorNaoEncontradoException {
 
@@ -127,7 +145,7 @@ public class Fachada {
         return instrutor.getAlunos();
     }
 
-    // metodo de autenticaçãao
+    // metodo de autenticação
     public UsuarioSistema login(String cpf, String senha) throws LoginException {
         // tenta autenticar como aluno
         try {

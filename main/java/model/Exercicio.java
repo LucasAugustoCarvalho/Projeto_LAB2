@@ -9,6 +9,8 @@ public class Exercicio {
         this.grupoMuscular = grupoMuscular;
     }
 
-    public String getNome() { return nome; }
-    public String getGrupoMuscular() { return grupoMuscular; }
+    public String getNome() { return nome;
+    }
+    public String getGrupoMuscular() { return grupoMuscular;
+    }
 }

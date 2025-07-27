@@ -21,23 +21,23 @@ public class AlunoGUI {
     private void initialize() {
         frame = new JFrame("Área do Aluno - " + aluno.getNome());
         frame.setSize(900, 650);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
 
-        // layout principal
+        // Layout principal
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // cabeçalho
+        // Cabeçalho
         JLabel headerLabel = new JLabel("Bem-vindo, " + aluno.getNome(), SwingConstants.CENTER);
         headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         mainPanel.add(headerLabel, BorderLayout.NORTH);
 
-        // painel central dividido treinos e exercícios
+        // Painel central dividido (treinos e exercícios)
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerLocation(400);
 
-        // painel da tabela de treinos
+        // Painel da tabela de treinos
         JPanel treinosPanel = new JPanel(new BorderLayout());
         treinosPanel.setBorder(BorderFactory.createTitledBorder("Meus Treinos"));
 
@@ -53,7 +53,7 @@ public class AlunoGUI {
         treinosPanel.add(tableScroll, BorderLayout.CENTER);
         splitPane.setLeftComponent(treinosPanel);
 
-        // painel de detalhes dos exercícios
+        // Painel de detalhes dos exercícios
         JPanel exerciciosPanel = new JPanel(new BorderLayout());
         exerciciosPanel.setBorder(BorderFactory.createTitledBorder("Exercícios do Treino"));
 
@@ -68,11 +68,11 @@ public class AlunoGUI {
 
         mainPanel.add(splitPane, BorderLayout.CENTER);
 
-        // rodape com botão sair
+        // Rodapé com botão Sair - CORREÇÃO PRINCIPAL
         JButton sairButton = new JButton("Sair");
         sairButton.addActionListener(e -> {
-            new LoginGUI();
-            frame.dispose();
+            new LoginGUI().setVisible(true); // Abre a tela de login
+            frame.dispose(); // Fecha a janela atual
         });
 
         JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -114,7 +114,7 @@ public class AlunoGUI {
             }
 
             exerciciosArea.setText(sb.toString());
-            exerciciosArea.setCaretPosition(0); // rola para o topo
+            exerciciosArea.setCaretPosition(0);
         }
     }
 
